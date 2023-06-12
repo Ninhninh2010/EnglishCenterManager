@@ -1,0 +1,988 @@
+﻿CREATE DATABASE DEMO_TTTA
+use DEMO_TTTA
+
+--ACC
+CREATE FUNCTION AUTO_AccID_Adm()
+RETURNS VARCHAR(5)
+AS
+BEGIN
+	DECLARE @ID VARCHAR(5)
+	IF (SELECT COUNT(AccID_Adm) FROM ACCOUNTS_ADMIN) = 0
+		SET @ID = '0'
+	ELSE
+		SELECT @ID = MAX(RIGHT(AccID_Adm, 3)) FROM ACCOUNTS_ADMIN
+		SELECT @ID = CASE
+			WHEN @ID >= 0 and @ID < 9 THEN 'AD00' + CONVERT(CHAR, CONVERT(INT, @ID) + 1)
+			WHEN @ID >= 9 THEN 'AD0' + CONVERT(CHAR, CONVERT(INT, @ID) + 1)
+		END
+	RETURN @ID
+END
+CREATE TABLE dbo.ACCOUNTS_ADMIN
+(
+	AccID_Adm char(5) PRIMARY KEY CONSTRAINT AccID_Adm DEFAULT DBO.AUTO_AccID_Adm(),
+	username char(100) NOT NULL UNIQUE,
+	pass char(100) NOT NULL,
+	NgayDK DATE NULL,
+)
+
+ALTER TABLE ACCOUNTS_ADMIN
+ADD CONSTRAINT USER_UNIQUE UNIQUE (username)
+
+ALTER TABLE ACCOUNTS_ADMIN
+ADD Remember int DEFAULT 0 CHECK(Remember >=0 and Remember <=1)
+update ACCOUNTS_ADMIN set Remember = 0
+
+INSERT INTO ACCOUNTS_ADMIN(username, pass, NgayDK) VALUES 
+('admin1','passadmin1', '2020-4-1')
+INSERT INTO ACCOUNTS_ADMIN(username, pass, NgayDK) VALUES 
+('admin2','passadmin2', '2022-10-20')
+
+-------------AcccSTUDENT----------------
+CREATE FUNCTION AUTO_AccID_Stu()
+RETURNS VARCHAR(5)
+AS
+BEGIN
+	DECLARE @ID VARCHAR(5)
+	IF (SELECT COUNT(AccID_Stu) FROM ACCOUNTS_STUDENT) = 0
+		SET @ID = '0'
+	ELSE
+		SELECT @ID = MAX(RIGHT(AccID_Stu, 3)) FROM ACCOUNTS_STUDENT
+		SELECT @ID = CASE
+			WHEN @ID >= 0 and @ID < 9 THEN 'ST00' + CONVERT(CHAR, CONVERT(INT, @ID) + 1)
+			WHEN @ID >= 9 THEN 'ST0' + CONVERT(CHAR, CONVERT(INT, @ID) + 1)
+		END
+	RETURN @ID
+END
+CREATE TABLE dbo.ACCOUNTS_STUDENT
+(
+	AccID_Stu char(5) PRIMARY KEY CONSTRAINT AccID_Stu DEFAULT dbo.AUTO_AccID_Stu(),
+	username char(100) NOT NULL UNIQUE,
+	pass char(100) NOT NULL,
+	NgayDK DATE NULL
+)
+
+ALTER TABLE ACCOUNTS_STUDENT
+ADD CONSTRAINT USERSTUDENT_UNIQUE UNIQUE (username)
+
+ALTER TABLE ACCOUNTS_STUDENT
+ADD Remember int DEFAULT 0 CHECK(Remember >=0 and Remember <=1)
+update ACCOUNTS_STUDENT set Remember = 0
+Select * From ACCOUNTS_ADMIN Where username = 'admin1' and Remember = 1
+INSERT INTO ACCOUNTS_STUDENT(username, pass, NgayDK) VALUES 
+('student1','passstudent', '2022-5-21')
+INSERT INTO ACCOUNTS_STUDENT(username, pass, NgayDK) VALUES 
+('student2','passstudent', '2021-3-14')
+INSERT INTO ACCOUNTS_STUDENT(username, pass, NgayDK) VALUES 
+('student3','passstudent', '2023-2-20')
+INSERT INTO ACCOUNTS_STUDENT(username, pass, NgayDK) VALUES 
+('student4','passstudent', '2022-12-15')
+INSERT INTO ACCOUNTS_STUDENT(username, pass, NgayDK) VALUES 
+('student5','passstudent', '2023-8-23')
+INSERT INTO ACCOUNTS_STUDENT(username, pass, NgayDK) VALUES 
+('student6','passstudent', '2021-9-26')
+INSERT INTO ACCOUNTS_STUDENT(username, pass, NgayDK) VALUES 
+('student7','passstudent', '2023-1-8')
+INSERT INTO ACCOUNTS_STUDENT(username, pass, NgayDK) VALUES 
+('student8','passstudent', '2021-12-3')
+INSERT INTO ACCOUNTS_STUDENT(username, pass, NgayDK) VALUES 
+('student9','passstudent', '2023-3-17')
+INSERT INTO ACCOUNTS_STUDENT(username, pass, NgayDK) VALUES 
+('student10','passstudent', '2021-10-8')
+INSERT INTO ACCOUNTS_STUDENT(username, pass, NgayDK) VALUES 
+('student11','passstudent', '2022-9-29')
+INSERT INTO ACCOUNTS_STUDENT(username, pass, NgayDK) VALUES 
+('student12','passstudent', '2021-7-15')
+INSERT INTO ACCOUNTS_STUDENT(username, pass, NgayDK) VALUES 
+('student13','passstudent', '2022-2-2')
+INSERT INTO ACCOUNTS_STUDENT(username, pass, NgayDK) VALUES 
+('student14','passstudent', '2022-9-4')
+select * from ACCOUNTS_STUDENT
+select * from HOCVIEN
+Select * From ACCOUNTS_ADMIN Where username = 'admin1' and pass = 'passadmin1'
+
+
+-----------ACC TEACHER--------------
+CREATE FUNCTION AUTO_AccID_Tea()
+RETURNS VARCHAR(5)
+AS
+BEGIN
+	DECLARE @ID VARCHAR(5)
+	IF (SELECT COUNT(AccID_Tea) FROM ACCOUNTS_TEACHER) = 0
+		SET @ID = '0'
+	ELSE
+		SELECT @ID = MAX(RIGHT(AccID_Tea, 3)) FROM ACCOUNTS_TEACHER
+		SELECT @ID = CASE
+			WHEN @ID >= 0 and @ID < 9 THEN 'TE00' + CONVERT(CHAR, CONVERT(INT, @ID) + 1)
+			WHEN @ID >= 9 THEN 'TE0' + CONVERT(CHAR, CONVERT(INT, @ID) + 1)
+		END
+	RETURN @ID
+END
+CREATE TABLE dbo.ACCOUNTS_TEACHER
+(
+	AccID_Tea char(5) PRIMARY KEY CONSTRAINT AccID_Tea DEFAULT dbo.AUTO_AccID_Tea(),
+	username char(100) NOT NULL UNIQUE,
+	pass char(100) NOT NULL,
+	NgayDK DATE NULL,
+)
+
+ALTER TABLE ACCOUNTS_TEACHER
+ADD CONSTRAINT USERTEACHER_UNIQUE UNIQUE (username)
+
+ALTER TABLE ACCOUNTS_TEACHER
+ADD Remember int DEFAULT 0 CHECK(Remember >=0 and Remember <=1)
+update ACCOUNTS_TEACHER set Remember = 0
+
+INSERT INTO ACCOUNTS_TEACHER(username, pass, NgayDK) VALUES 
+('teacher1','passteacher', '2020-9-12')
+INSERT INTO ACCOUNTS_TEACHER(username, pass, NgayDK) VALUES 
+('teacher2','passteacher', '2022-12-5')
+INSERT INTO ACCOUNTS_TEACHER(username, pass, NgayDK) VALUES 
+('teacher3','passteacher', '2022-5-21')
+INSERT INTO ACCOUNTS_TEACHER(username, pass, NgayDK) VALUES 
+('teacher4','passteacher', '2023-1-15')
+INSERT INTO ACCOUNTS_TEACHER(username, pass, NgayDK) VALUES 
+('teacher5','passteacher', '2022-7-16')
+INSERT INTO ACCOUNTS_TEACHER(username, pass, NgayDK) VALUES 
+('teacher6','passteacher', '2023-2-20')
+INSERT INTO ACCOUNTS_TEACHER(username, pass, NgayDK) VALUES 
+('teacher7','passteacher', '2021-10-7')
+INSERT INTO ACCOUNTS_TEACHER(username, pass, NgayDK) VALUES 
+('teacher8','passteacher', '2023-2-2')
+INSERT INTO ACCOUNTS_TEACHER(username, pass, NgayDK) VALUES 
+('teacher9','passteacher', '2021-2-13')
+INSERT INTO ACCOUNTS_TEACHER(username, pass, NgayDK) VALUES 
+('teacher10','passteacher', '2022-11-26')
+INSERT INTO ACCOUNTS_TEACHER(username, pass, NgayDK) VALUES 
+('teacher11','passteacher', '2022-8-30')
+INSERT INTO ACCOUNTS_TEACHER(username, pass, NgayDK) VALUES 
+('teacher12','passteacher', '2023-9-1')
+INSERT INTO ACCOUNTS_TEACHER(username, pass, NgayDK) VALUES 
+('teacher13','passteacher', '2022-12-17')
+INSERT INTO ACCOUNTS_TEACHER(username, pass, NgayDK) VALUES 
+('teacher14','passteacher', '2022-6-5')
+INSERT INTO ACCOUNTS_TEACHER(username, pass, NgayDK) VALUES 
+('teacher15','passteacher', '2021-12-6')
+select *from ACCOUNTS_TEACHER
+select *from GIANGVIEN
+
+----------ACC_NHANVIEN---------
+CREATE FUNCTION AUTO_AccID_NV()
+RETURNS VARCHAR(5)
+AS
+BEGIN
+	DECLARE @ID VARCHAR(5)
+	IF (SELECT COUNT(AccID_NV) FROM ACCOUNTS_NHANVIEN) = 0
+		SET @ID = '0'
+	ELSE
+		SELECT @ID = MAX(RIGHT(AccID_NV, 3)) FROM ACCOUNTS_NHANVIEN
+		SELECT @ID = CASE
+			WHEN @ID >= 0 and @ID < 9 THEN 'ID00' + CONVERT(CHAR, CONVERT(INT, @ID) + 1)
+			WHEN @ID >= 9 THEN 'ID0' + CONVERT(CHAR, CONVERT(INT, @ID) + 1)
+		END
+	RETURN @ID
+END
+CREATE TABLE dbo.ACCOUNTS_NHANVIEN
+(
+	AccID_NV char(5) PRIMARY KEY CONSTRAINT AccID_NV DEFAULT dbo.AUTO_AccID_NV(),
+	username char(100) NOT NULL UNIQUE,
+	pass char(100) NOT NULL,
+	NgayDK DATE NULL,
+)
+
+ALTER TABLE ACCOUNTS_NHANVIEN
+ADD CONSTRAINT USERNV_UNIQUE UNIQUE (username)
+
+ALTER TABLE ACCOUNTS_NHANVIEN
+ADD Remember int DEFAULT 0 CHECK(Remember >=0 and Remember <=1)
+
+INSERT INTO ACCOUNTS_NHANVIEN(username, pass, NgayDK) VALUES 
+('nhanvien1','passnhanvien1', '2020-9-12')
+INSERT INTO ACCOUNTS_NHANVIEN(username, pass, NgayDK) VALUES 
+('nhanvien2','passnhanvien2', '2020-9-12')
+select * from ACCOUNTS_NHANVIEN
+update ACCOUNTS_NHANVIEN set Remember = 0
+
+---thong tin admin---
+CREATE TABLE dbo.ADMIN
+(
+	AdmID CHAR(5) PRIMARY KEY CONSTRAINT AdmID DEFAULT DBO.AUTO_AdmID(),
+	ACCID char(5) NOT NULL UNIQUE, --tham chieu den ACCOUNTS_STUDENT_ID
+	HOTEN NVARCHAR(100) NOT NULL,
+	GIOITINH NVARCHAR(20) NULL,
+	NGAYSINH DATE NULL,
+	DIACHI NVARCHAR(4000) NULL,
+	SDT CHAR(20) NULL,
+	CMND CHAR(20) NULL,
+	EMAIL CHAR(100) NULL,
+	ChucVu nvarchar(50) DEFAULT N'Admin',
+	CONSTRAINT FK_ADMIN FOREIGN KEY (ACCID) REFERENCES ACCOUNTS_ADMIN(AccID_Adm) ON DELETE CASCADE ON UPDATE CASCADE
+)
+CREATE FUNCTION AUTO_AdmID()
+RETURNS VARCHAR(5)
+AS
+BEGIN
+	DECLARE @ID VARCHAR(5)
+	IF (SELECT COUNT(AdmID) FROM ADMIN) = 0
+		SET @ID = '0'
+	ELSE
+		SELECT @ID = MAX(RIGHT(AdmID, 3)) FROM ADMIN
+		SELECT @ID = CASE
+			WHEN @ID >= 0 and @ID < 9 THEN 'AM00' + CONVERT(CHAR, CONVERT(INT, @ID) + 1)
+			WHEN @ID >= 9 THEN 'AM0' + CONVERT(CHAR, CONVERT(INT, @ID) + 1)
+		END
+	RETURN @ID
+END
+INSERT INTO ADMIN(ACCID, HOTEN, GIOITINH, NGAYSINH, DIACHI, SDT, CMND, EMAIL) VALUES
+('AD001', N'Language Hub', N'Nam', '2003-2-1', N'Quãng Ngãi', '0912 345 678','458209041923', 'laam@gmail.com')
+select *from ADMIN
+
+--thong tin học viên
+CREATE TABLE dbo.HOCVIEN
+(
+	HVID CHAR(5) PRIMARY KEY CONSTRAINT HVID DEFAULT DBO.AUTO_HVID(),
+	ACCID char(5) NOT NULL UNIQUE, --tham chieu den ACCOUNTS_STUDENT_ID
+	HOTEN NVARCHAR(100) NOT NULL,
+	GIOITINH NVARCHAR(20) NULL,
+	NGAYSINH DATE NULL,
+	DIACHI NVARCHAR(4000) NULL,
+	SDT CHAR(20) NULL,
+	CMND CHAR(20) NULL,
+	EMAIL CHAR(100) NULL,
+	AVATAR IMAGE NULL,
+	TienTaiKhoan int NULL,
+	CONSTRAINT FK_STUDENT FOREIGN KEY (ACCID) REFERENCES ACCOUNTS_STUDENT(AccID_Stu) ON DELETE CASCADE
+)
+CREATE FUNCTION AUTO_HVID()
+RETURNS VARCHAR(5)
+AS
+BEGIN
+	DECLARE @ID VARCHAR(5)
+	IF (SELECT COUNT(HVID) FROM HOCVIEN) = 0
+		SET @ID = '0'
+	ELSE
+		SELECT @ID = MAX(RIGHT(HVID, 3)) FROM HOCVIEN
+		SELECT @ID = CASE
+			WHEN @ID >= 0 and @ID < 9 THEN 'HV00' + CONVERT(CHAR, CONVERT(INT, @ID) + 1)
+			WHEN @ID >= 9 THEN 'HV0' + CONVERT(CHAR, CONVERT(INT, @ID) + 1)
+		END
+	RETURN @ID
+END
+ALTER TABLE HOCVIEN
+ADD ChucVu nvarchar(50) DEFAULT N'Học viên'
+Update HOCVIEN Set ChucVu = N'Học viên'
+select *from HOCVIEN
+
+INSERT INTO HOCVIEN(ACCID, HOTEN, GIOITINH, NGAYSINH, DIACHI, SDT, CMND, EMAIL, TienTaiKhoan) VALUES
+('ST001', N'Nguyễn Tấn Lâm', N'Nam', '2003-2-1', N'Quãng Ngãi', '0912 345 678','458209041923', 'laam@gmail.com', '100000')
+INSERT INTO HOCVIEN(ACCID, HOTEN, GIOITINH, NGAYSINH, DIACHI, SDT, CMND,EMAIL, TienTaiKhoan) VALUES
+('ST002', N'Nguyễn Thị Hòa', N'Nữ', '2005-5-11', N'Hồ Chí Minh', '0987 654 321','168535726492', 'hoa@gmail.com', '170000')
+INSERT INTO HOCVIEN(ACCID, HOTEN, GIOITINH, NGAYSINH, DIACHI, SDT, CMND,EMAIL, TienTaiKhoan) VALUES
+('ST003', N'Nguyễn Thị Tú', N'Nữ', '2000-06-15', N'An Giang', '0905 678 123','980513285400', 'tu@gmail.com', '470000')
+INSERT INTO HOCVIEN(ACCID, HOTEN, GIOITINH, NGAYSINH, DIACHI, SDT, CMND,EMAIL, TienTaiKhoan) VALUES
+('ST004', N'Trần Văn Hòa', N'Nam', '2005-02-28', N'Hồ Chí Minh', '0978 123 456','317925684175', 'hoaa@gmail.com', '210000')
+INSERT INTO HOCVIEN(ACCID, HOTEN, GIOITINH, NGAYSINH, DIACHI, SDT, CMND,EMAIL, TienTaiKhoan) VALUES
+('ST005', N'Lê Thị Ái', N'Nữ', '2003-09-01', N'Bình Dương', '0946 789 012','872619051348', 'ai@gmail.com', '170000')
+INSERT INTO HOCVIEN(ACCID, HOTEN, GIOITINH, NGAYSINH, DIACHI, SDT, CMND,EMAIL, TienTaiKhoan) VALUES
+('ST006', N'Phạm Quang Đức', N'Nam', '2002-11-03', N'Hồ Chí Minh', '0965 432 109','632490513074', 'duc@gmail.com', '170000')
+INSERT INTO HOCVIEN(ACCID, HOTEN, GIOITINH, NGAYSINH, DIACHI, SDT, CMND,EMAIL, TienTaiKhoan) VALUES
+('ST007', N'Hoàng Minh Tuấn', N'Nam', '2008-07-12', N'Bình Dương', '0934 567 890','514789032846', 'tuan@gmail.com', '170000')
+INSERT INTO HOCVIEN(ACCID, HOTEN, GIOITINH, NGAYSINH, DIACHI, SDT, CMND,EMAIL, TienTaiKhoan) VALUES
+('ST008', N'Vũ Ngọc Thảo', N'Nữ', '2004-04-22', N'Cần Thơ', '0983 210 987','902681354781', 'thao@gmail.com', '170000')
+INSERT INTO HOCVIEN(ACCID, HOTEN, GIOITINH, NGAYSINH, DIACHI, SDT, CMND,EMAIL, TienTaiKhoan) VALUES
+('ST009', N'Đỗ Thế Vinh', N'Nam', '2001-08-05', N'Đắk Lắk', '0916 754 320','147526803459', 'vinh@gmail.com', '170000')
+INSERT INTO HOCVIEN(ACCID, HOTEN, GIOITINH, NGAYSINH, DIACHI, SDT, CMND,EMAIL, TienTaiKhoan) VALUES
+('ST010', N'Bùi Xuân Dương', N'Nam', '2007-12-08', N'Gia Lai', '0971 208 645','865430912785', 'duong@gmail.com', '170000')
+INSERT INTO HOCVIEN(ACCID, HOTEN, GIOITINH, NGAYSINH, DIACHI, SDT, CMND,EMAIL, TienTaiKhoan) VALUES
+('ST011', N'Đinh Thế Quân', N'Nam', '2006-01-17', N'Quảng Trị', '0904 865 732','943285062174', 'quan@gmail.com', '170000')
+INSERT INTO HOCVIEN(ACCID, HOTEN, GIOITINH, NGAYSINH, DIACHI, SDT, CMND,EMAIL, TienTaiKhoan) VALUES
+('ST012', N'Lý Thanh Hải', N'Nam', '2000-11-27', N'Nghệ An', '0989 541 237','406758921384', 'hai@gmail.com', '170000')
+INSERT INTO HOCVIEN(ACCID, HOTEN, GIOITINH, NGAYSINH, DIACHI, SDT, CMND,EMAIL, TienTaiKhoan) VALUES
+('ST013', N'Trịnh Minh Tuệ', N'Nữ', '2008-04-02', N'Hồ Chí Minh', '0932 176 584','583024679105', 'tue@gmail.com', '170000')
+INSERT INTO HOCVIEN(ACCID, HOTEN, GIOITINH, NGAYSINH, DIACHI, SDT, CMND,EMAIL, TienTaiKhoan) VALUES
+('ST014', N'Ngô Đức Thịnh', N'Nam', '2007-03-11', N'Hà Nội', '0967 589 123','274019863572', 'thinh@gmail.com', '170000')
+Update HOCVIEN Set TienTaiKhoan = '1000000'
+
+--Thân nhân
+CREATE TABLE dbo.THANNHAN
+(
+	HVID CHAR(5), --tham chieu toi HOCVIEN.HVID
+	TenNguoiThan nvarchar(100),
+	SDT char(11),
+	QuanHe nvarchar(50),
+	CONSTRAINT PK_THANNHAN PRIMARY KEY (HVID, TenNguoiThan),
+	--CONSTRAINT FK_THANNHAN FOREIGN KEY (HVID) REFERENCES HOCVIEN(HVID)
+)
+
+
+--GIANG VIEN--
+CREATE FUNCTION AUTO_GvID()
+RETURNS VARCHAR(5)
+AS
+BEGIN
+	DECLARE @ID VARCHAR(5)
+	IF (SELECT COUNT(GvID) FROM GIANGVIEN) = 0
+		SET @ID = '0'
+	ELSE
+		SELECT @ID = MAX(RIGHT(GvID, 3)) FROM GIANGVIEN
+		SELECT @ID = CASE
+			WHEN @ID >= 0 and @ID < 9 THEN 'GV00' + CONVERT(CHAR, CONVERT(INT, @ID) + 1)
+			WHEN @ID >= 9 THEN 'GV0' + CONVERT(CHAR, CONVERT(INT, @ID) + 1)
+		END
+	RETURN @ID
+END
+CREATE TABLE dbo.GIANGVIEN
+(
+	GvID CHAR(5) PRIMARY KEY CONSTRAINT GvID DEFAULT dbo.AUTO_GvID(),	
+	AccID char(5) NOT NULL,  --foreign key -> ACC_Teacher.AccID
+	HOTEN NVARCHAR(100) NULL,
+	GIOITINH NVARCHAR(20) NULL,
+	NGAYSINH DATE NULL,
+	DIACHI NVARCHAR(4000) NULL,
+	SDT CHAR(20) NULL,
+	CMND CHAR(20) NULL,
+	EMAIL CHAR(100) NULL,
+	AVATAR IMAGE NULL,
+	CONSTRAINT FK_GIANGVIEN FOREIGN KEY (AccID) REFERENCES ACCOUNTS_TEACHER(AccID_Tea) ON DELETE CASCADE
+)
+ALTER TABLE GIANGVIEN
+ADD ChucVu nvarchar(50) DEFAULT N'Giảng viên'
+Update GIANGVIEN Set ChucVu = N'Giảng viên'
+select *from GIANGVIEN
+
+INSERT INTO GIANGVIEN(AccID, HOTEN, GIOITINH, NGAYSINH, DIACHI, SDT, EMAIL) VALUES
+('TE001', N'Nguyễn Thị Hoa', N'Nam', '1998-03-17', N'Hồ Chí Minh', '0987 654 321', 'gvhoa@gmail.com')
+INSERT INTO GIANGVIEN(AccID, HOTEN, GIOITINH, NGAYSINH, DIACHI, SDT, EMAIL) VALUES
+('TE002', N'Trần Văn Hải', N'Nam', '1997-06-05', N'Bến Tre', '0912 345 678', 'gvhai@gmail.com')
+INSERT INTO GIANGVIEN(AccID, HOTEN, GIOITINH, NGAYSINH, DIACHI, SDT, EMAIL) VALUES
+('TE003', N'Lê Thị Thanh Hà', N'Nữ', '1995-11-11', N'Đồng Tháp', '0936 714 148', 'gvha@gmail.com')
+INSERT INTO GIANGVIEN(AccID, HOTEN, GIOITINH, NGAYSINH, DIACHI, SDT, EMAIL) VALUES
+('TE004', N'Phạm Văn Nam', N'Nam', '1996-08-23', N'Hồ Chí Minh', '0923 272 864', 'gvnam@gmail.com')
+INSERT INTO GIANGVIEN(AccID, HOTEN, GIOITINH, NGAYSINH, DIACHI, SDT, EMAIL) VALUES
+('TE005', N'Hoàng Thị Hồng Nhung', N'Nữ', '1994-01-29', N'Hồ Chí Minh', '0975 428 093', 'gvnhung@gmail.com')
+INSERT INTO GIANGVIEN(AccID, HOTEN, GIOITINH, NGAYSINH, DIACHI, SDT, EMAIL) VALUES
+('TE006', N'Đặng Thanh Tuấn', N'Nam', '1993-04-19', N'An Giang', '0893 378 460', 'gvtuan@gmail.com')
+INSERT INTO GIANGVIEN(AccID, HOTEN, GIOITINH, NGAYSINH, DIACHI, SDT, EMAIL) VALUES
+('TE007', N'Võ Thị Ngọc Diễm', N'Nữ', '1992-07-08', N'Hồ Chí Minh', '0946 603 030', 'gvdiem@gmail.com')
+INSERT INTO GIANGVIEN(AccID, HOTEN, GIOITINH, NGAYSINH, DIACHI, SDT, EMAIL) VALUES
+('TE008', N'Bùi Văn Phương', N'Nam', '1991-09-26', N'An Giang', '0937 723 847', 'gvphuong@gmail.com')
+INSERT INTO GIANGVIEN(AccID, HOTEN, GIOITINH, NGAYSINH, DIACHI, SDT, EMAIL) VALUES
+('TE009', N'Mai Thị Thu Hà', N'Nữ', '1990-12-14', N'Bình Dương', '0917 972 667', 'gvhathu@gmail.com')
+INSERT INTO GIANGVIEN(AccID, HOTEN, GIOITINH, NGAYSINH, DIACHI, SDT, EMAIL) VALUES
+('TE010', N'Ngô Đình Trung', N'Nam', '1989-03-04', N'Gia Lai', '0943 834 283', 'gvtrung@gmail.com')
+INSERT INTO GIANGVIEN(AccID, HOTEN, GIOITINH, NGAYSINH, DIACHI, SDT, EMAIL) VALUES
+('TE011', N'Nguyễn Thị Thùy Linh', N'Nữ', '1988-05-22', N'Hà Giang', '0918 083 823', 'gvlinh@gmail.com')
+INSERT INTO GIANGVIEN(AccID, HOTEN, GIOITINH, NGAYSINH, DIACHI, SDT, EMAIL) VALUES
+('TE012', N'Lê Văn Quang', N'Nam', '1987-08-10', N'Hà Nội', '0957 837 198', 'gvquang@gmail.com')
+INSERT INTO GIANGVIEN(AccID, HOTEN, GIOITINH, NGAYSINH, DIACHI, SDT, EMAIL) VALUES
+('TE013', N'Phạm Thị Mai Anh', N'Nữ', '1986-10-28', N'Hồ Chí Minh', '0927 874 892', 'gvanh@gmail.com')
+INSERT INTO GIANGVIEN(AccID, HOTEN, GIOITINH, NGAYSINH, DIACHI, SDT, EMAIL) VALUES
+('TE014', N'Trần Quang Ngọc', N'Nam', '1983-1-22', N'Hồ Chí Minh', '0967 262 674', 'gvtqn@gmail.com')
+
+--NHAN VIEN--
+CREATE FUNCTION AUTO_NVID()
+RETURNS VARCHAR(5)
+AS
+BEGIN
+	DECLARE @ID VARCHAR(5)
+	IF (SELECT COUNT(NVID) FROM NHANVIEN) = 0
+		SET @ID = '0'
+	ELSE
+		SELECT @ID = MAX(RIGHT(NVID, 3)) FROM NHANVIEN
+		SELECT @ID = CASE
+			WHEN @ID >= 0 and @ID < 9 THEN 'NV00' + CONVERT(CHAR, CONVERT(INT, @ID) + 1)
+			WHEN @ID >= 9 THEN 'NV0' + CONVERT(CHAR, CONVERT(INT, @ID) + 1)
+		END
+	RETURN @ID
+END
+CREATE TABLE dbo.NHANVIEN
+(
+	NVID CHAR(5) PRIMARY KEY CONSTRAINT NVID DEFAULT dbo.AUTO_NVID(),
+	ACCID char(5) NOT NULL,--tham chieu den ACCNHANVIEN.ACCID
+	HOTEN NVARCHAR(100) NOT NULL,
+	GIOITINH NVARCHAR(20) NULL,
+	NGAYSINH DATE NULL,
+	DIACHI NVARCHAR(4000) NULL,
+	SDT CHAR(20) NULL,
+	CMND CHAR(20) NULL,
+	EMAIL CHAR(100) NULL,
+	AVATAR IMAGE NULL,
+	CONSTRAINT FK_NHANVIEN FOREIGN KEY (ACCID) REFERENCES ACCOUNTS_NHANVIEN(AccID_NV) ON DELETE CASCADE ON UPDATE CASCADE
+)
+ALTER TABLE NHANVIEN
+ADD ChucVu nvarchar(50) DEFAULT N'Nhân viên'
+Update NHANVIEN Set ChucVu = N'Nhân viên'
+ALTER TABLE NHANVIEN
+ADD Luong nvarchar(50) DEFAULT N'Nhân viên'
+
+INSERT INTO NHANVIEN(ACCID, HOTEN, GIOITINH, NGAYSINH, DIACHI, SDT, CMND,EMAIL) VALUES
+('ID001', N'Nguyễn Quốc Trọng', N'Nam', '1996-03-12', N'Hà Nội', '0967 589 123','274019863572', 'trong@gmail.com')
+INSERT INTO NHANVIEN(ACCID, HOTEN, GIOITINH, NGAYSINH, DIACHI, SDT, CMND,EMAIL) VALUES
+('ID002', N'Trương Thùy Trang', N'Nữ', '1999-10-15', N'Hồ Chí Minh', '0945 339 673','274734463572', 'trang@gmail.com')
+select * from NHANVIEN
+
+--Phong hoc
+CREATE TABLE dbo.PHONGHOC
+(	
+	Phong char(5) PRIMARY KEY
+)
+ALTER TABLE PHONGHOC
+ADD TrangThai int DEFAULT 1 CHECK(TrangThai >=0 and TrangThai <=1) --1:hoat dong && 2:khong hd
+
+INSERT INTO PHONGHOC(Phong, TrangThai) VALUES ('A1', N'Hoạt động')
+INSERT INTO PHONGHOC(Phong, TrangThai) VALUES ('A2', N'Hoạt động')
+INSERT INTO PHONGHOC(Phong, TrangThai) VALUES ('A3', N'Hoạt động')
+INSERT INTO PHONGHOC(Phong, TrangThai) VALUES ('B1', N'Hoạt động')
+INSERT INTO PHONGHOC(Phong, TrangThai) VALUES ('B2', N'Hoạt động')
+INSERT INTO PHONGHOC(Phong, TrangThai) VALUES ('C1', N'Hoạt động')
+INSERT INTO PHONGHOC(Phong, TrangThai) VALUES ('C2', N'Hoạt động')
+INSERT INTO PHONGHOC(Phong, TrangThai) VALUES ('C3', N'Hoạt động')
+INSERT INTO PHONGHOC(Phong, TrangThai) VALUES ('D1', N'Hoạt động')
+select * from PHONGHOC
+
+
+--Khóa học
+CREATE TABLE dbo.KHOAHOC
+(
+	MaKH char(5) PRIMARY KEY CONSTRAINT MaKH DEFAULT DBO.AUTO_MaKH(),
+	TenKH nvarchar(100)
+)
+ALTER TABLE KHOAHOC
+ADD TrangThaiKH int DEFAULT 1 CHECK(TrangThaiKH >=0 and TrangThaiKH <=1) --1:hoat dong && 2:khong hd
+
+CREATE FUNCTION AUTO_MaKH()
+RETURNS VARCHAR(5)
+AS
+BEGIN
+	DECLARE @ID VARCHAR(5)
+	IF (SELECT COUNT(MaKH) FROM KHOAHOC) = 0
+		SET @ID = '0'
+	ELSE
+		SELECT @ID = MAX(RIGHT(MaKH, 3)) FROM KHOAHOC
+		SELECT @ID = CASE
+			WHEN @ID >= 0 and @ID < 9 THEN 'KH00' + CONVERT(CHAR, CONVERT(INT, @ID) + 1)
+			WHEN @ID >= 9 THEN 'KH0' + CONVERT(CHAR, CONVERT(INT, @ID) + 1)
+		END
+	RETURN @ID
+END
+INSERT INTO KHOAHOC(TenKH, TrangThai) VALUES (N'Anh Văn Cơ Bản', N'Hoạt động')
+INSERT INTO KHOAHOC(TenKH, TrangThai) VALUES(N'Giao Tiếp Cơ Bản', N'Hoạt động')
+INSERT INTO KHOAHOC(TenKH, TrangThai) VALUES(N'Anh Văn Nâng Cao', N'Hoạt động')
+INSERT INTO KHOAHOC(TenKH, TrangThai) VALUES(N'Toeic Cơ Bản', N'Hoạt động')
+INSERT INTO KHOAHOC(TenKH, TrangThai) VALUES(N'Ielts Cơ Bản', N'Hoạt động')
+select * from KHOAHOC
+
+--Giờ học
+CREATE TABLE dbo.GIOHOC
+(
+	Ca char(1),
+	GioBatDau TIME,
+	GioKetThuc TIME,
+	CONSTRAINT PK_GIOHOC PRIMARY KEY (Ca)
+)
+INSERT INTO GIOHOC(Ca, GioBatDau, GioKetThuc) VALUES
+('1', '7:00:00', '9:00:00'),
+('2', '9:00:00', '11:00:00'),
+('3', '13:00:00', '15:00:00'),
+('4', '15:00:00', '17:00:00'),
+('5', '17:00:00', '19:00:00'),
+('6', '19:00:00', '21:00:00')
+
+--Lop hoc
+CREATE TABLE dbo.LOPHOC
+(	
+	MaLop char(5) PRIMARY KEY CONSTRAINT MaLop DEFAULT dbo.AUTO_MaLop(),
+	MaKH char(5) NOT NULL, --tham chieu toi KHOAHOC.MaKH
+	TenMon nvarchar(100) NOT NULL,
+	TenMonGon nvarchar(50) NOT NULL,
+	SoBuoiTrongTuan char(2),
+	HocPhi char(15),
+	DiemTBQuaMon float DEFAULT 8.0, --điểm bắt buộc để qua môn
+	GiangVien char(5),--tham chieu toi GIANGVIEN.GvID
+	SoHocVien char(3),
+	NgayBatDau DATE,
+	NgayKetThuc DATE,
+	Luong int Default 3000000,
+	TrangThai nvarchar(50),--trạng thái lớp đã đầy học viên chưa
+	CONSTRAINT FK_LOPHOC_GiangVien FOREIGN KEY (GiangVien) REFERENCES GIANGVIEN(GvID) ON DELETE SET NULL ON UPDATE CASCADE,
+	CONSTRAINT FK_MONHOC FOREIGN KEY (MaKH) REFERENCES KHOAHOC(MaKH) ON DELETE CASCADE ON UPDATE CASCADE
+)
+ALTER TABLE LOPHOC
+ADD CONSTRAINT df_TrangThai
+DEFAULT N'Hoạt động' FOR TrangThai;
+
+--trạng thái lớp còn hoạt động hay không? 1:mở && 2:đóng
+ALTER TABLE LOPHOC
+ADD TTMoLop int DEFAULT 1 CHECK(TTMoLop >=0 and TTMoLop <=1)
+Update LOPHOC set TTMoLop = 0 Where MaLop = 'LH001'
+
+--Xac nhan day? 1:xác nhận dạy && 2:hủy lớp
+ALTER TABLE LOPHOC
+ADD XacNhan int DEFAULT 0 CHECK(XacNhan >=0 and XacNhan <=1)
+CREATE FUNCTION AUTO_MaLop()
+RETURNS VARCHAR(5)
+AS
+BEGIN
+	DECLARE @ID VARCHAR(5)
+	IF (SELECT COUNT(MaLop) FROM LOPHOC) = 0
+		SET @ID = '0'
+	ELSE
+		SELECT @ID = MAX(RIGHT(MaLop, 3)) FROM LOPHOC
+		SELECT @ID = CASE
+			WHEN @ID >= 0 and @ID < 9 THEN 'LH00' + CONVERT(CHAR, CONVERT(INT, @ID) + 1)
+			WHEN @ID >= 9 THEN 'LH0' + CONVERT(CHAR, CONVERT(INT, @ID) + 1)
+		END
+	RETURN @ID
+END
+
+INSERT INTO LOPHOC(MaKH, TenMon,TenMonGon, SoBuoiTrongTuan, HocPhi, DiemTBQuaMon, GiangVien, SoHocVien, NgayBatDau, NgayKetThuc, TrangThai) VALUES
+('KH001', N'Anh Văn Cơ Bản 1', 'AVCB 1','2', '500000', 8.0, 'GV011', '50', '2023-01-03', '2023-02-03', N'Hoạt động');
+INSERT INTO LOPHOC(MaKH, TenMon,TenMonGon, SoBuoiTrongTuan, HocPhi, DiemTBQuaMon, GiangVien, SoHocVien, NgayBatDau, NgayKetThuc, TrangThai) VALUES
+('KH002', N'Giao Tiếp Cơ Bản 1', 'GTCB 1','2', '500000', 8.0, 'GV006', '50', '2023-01-03', '2023-02-03', N'Hoạt động');
+INSERT INTO LOPHOC(MaKH, TenMon,TenMonGon, SoBuoiTrongTuan, HocPhi, DiemTBQuaMon, GiangVien, SoHocVien, NgayBatDau, NgayKetThuc, TrangThai) VALUES
+('KH003', N'Anh Văn Nâng Cao 1', 'AVNC 1','2', '500000', 8.0, 'GV010', '50', '2023-01-03', '2023-02-03', N'Hoạt động');
+INSERT INTO LOPHOC(MaKH, TenMon,TenMonGon, SoBuoiTrongTuan, HocPhi, DiemTBQuaMon, GiangVien, SoHocVien, NgayBatDau, NgayKetThuc, TrangThai) VALUES
+('KH004', N'Toeic Cơ Bản 1', 'ToeicCB 1','2', '500000', 8.0, 'GV005', '50', '2023-01-03', '2023-02-03', N'Hoạt động');
+INSERT INTO LOPHOC(MaKH, TenMon,TenMonGon, SoBuoiTrongTuan, HocPhi, DiemTBQuaMon, GiangVien, SoHocVien, NgayBatDau, NgayKetThuc, TrangThai) VALUES
+('KH004', N'Toeic Cơ Bản 2', 'ToeicCB 2', '2', '500000', 8.0, 'GV008', '50', '2023-04-12', '2023-05-12', N'Hoạt động');
+INSERT INTO LOPHOC(MaKH, TenMon,TenMonGon, SoBuoiTrongTuan, HocPhi, DiemTBQuaMon, GiangVien, SoHocVien, NgayBatDau, NgayKetThuc, TrangThai) VALUES
+('KH005', N'Ielts Cơ Bản 1', 'IeltsCB 1', '2', '500000', 8.0, 'GV003', '50', '2023-01-03', '2023-02-03', N'Hoạt động');
+INSERT INTO LOPHOC(MaKH, TenMon,TenMonGon, SoBuoiTrongTuan, HocPhi, DiemTBQuaMon, GiangVien, SoHocVien, NgayBatDau, NgayKetThuc, TrangThai) VALUES
+('KH005', N'Ielts Cơ Bản 3', 'IeltsCB 3', '2', '500000', 8.0, 'GV011', '50', '2023-01-03', '2023-02-03', N'Hoạt động');
+SELECT *FROM LOPHOC 
+Select * from LICHHOC
+update LOPHOC Set SoBuoiTrongTuan = '{0}', GiangVien = '{1}', SoHocVien = '{2}', NgayBatDau ='{3}', NgayKetThuc = '{4}' where MaLop = '{5}'
+
+--lich hoc các môn
+CREATE TABLE dbo.LICHHOC
+(
+	MaLop char(5),--tham chieu toi LOPHOC.MaLop
+	Thu char(1),
+	Ca char(1),--tham chieu toi GIOHOC.Ca
+	Phong char(5),--tham chieu toi PHONGHOC.Phong
+	CONSTRAINT PK_LICHHOC PRIMARY KEY (Thu, Ca, Phong),
+	CONSTRAINT FK_MaLop FOREIGN KEY (MaLop) REFERENCES LOPHOC(MaLop) ON DELETE CASCADE ON UPDATE CASCADE,
+	CONSTRAINT FK_Ca FOREIGN KEY (Ca) REFERENCES GioHoc(Ca) ON DELETE CASCADE ON UPDATE CASCADE,
+	CONSTRAINT FK_Phong FOREIGN KEY (Phong) REFERENCES PHONGHOC(Phong) ON DELETE CASCADE ON UPDATE CASCADE,
+)
+Select * From LOPHOC left join LICHHOC on LICHHOC.MaLop = LOPHOC.MaLop Where TTMoLop = 0;
+INSERT INTO LICHHOC(MaLop, Thu, Ca, Phong) VALUES
+('LH001', '2', '1', 'A1'),
+('LH001', '4', '1', 'A1'),
+('LH002', '2', '4', 'A3'),
+('LH002', '6', '4', 'A3')
+INSERT INTO LICHHOC(MaLop, Thu, Ca, Phong) VALUES
+('LH003', '3', '3', 'B3'),
+('LH003', '5', '3', 'B2')
+INSERT INTO LICHHOC(MaLop, Thu, Ca, Phong) VALUES
+('LH004', '3', '5', 'C2'),
+('LH004', '7', '5', 'C2')
+
+
+--Danh sách học sinh các lớp 
+CREATE TABLE dbo.DANHSACHLOP
+(
+	MaLop char(5),--tham chieu den LOPHOC.MaLop
+	HVID char(5),--tham chieu den HOCVIEN.HvID		
+	DiemGiuaKy float DEFAULT 0,
+	DiemCuoiKy float DEFAULT 0,
+	TrangThai nvarchar(50), --hoanthanh/chuahoanthanh
+	CONSTRAINT PK_DANGKILOP PRIMARY KEY (MaLop, HVID),
+	CONSTRAINT CK_DIEMGIUAKY CHECK(DiemGiuaKy >= 0 and DiemGiuaKy <= 10),
+	CONSTRAINT CK_DIEMCUOIKY CHECK(DiemCuoiKy >= 0 and DiemCuoiKy <= 10),
+	CONSTRAINT FK_DANGKILOP_MaLop FOREIGN KEY (MaLop) REFERENCES LOPHOC(MaLop) ON DELETE CASCADE ON UPDATE CASCADE,
+	CONSTRAINT FK_DANGKILOP_HVID FOREIGN KEY (HVID) REFERENCES HOCVIEN(HVID) ON DELETE CASCADE ON UPDATE CASCADE
+)
+delete DANHSACHLOP
+select * from DANHSACHLOP
+select * from HOCVIEN
+INSERT INTO DANHSACHLOP(MaLop, HVID, DiemGiuaKy, DiemCuoiKy, TrangThai) VALUES
+('LH001','HV001', 7.5, 8.0, N'Chưa hoàn thành'),
+('LH001','HV002', 7.0, 8.5, N'Chưa hoàn thành'),
+('LH001','HV003', 6.5, 8.0, N'Chưa hoàn thành'),
+('LH001','HV004', 7.5, 6.0, N'Chưa hoàn thành'),
+('LH001','HV005', 9.5, 8.0, N'Chưa hoàn thành'),
+('LH001','HV006', 6.5, 6.0, N'Chưa hoàn thành'),
+('LH001','HV007', 7.5, 9.0, N'Chưa hoàn thành'),
+('LH001','HV008', 7.0, 6.0, N'Chưa hoàn thành')
+INSERT INTO DANHSACHLOP(MaLop, HVID, DiemGiuaKy, DiemCuoiKy, TrangThai) VALUES
+('LH002','HV001', 5.5, 8.5, N'Chưa hoàn thành'),
+('LH002','HV002', 7.0, 8.0, N'Chưa hoàn thành'),
+('LH002','HV003', 8.5, 9.0, N'Chưa hoàn thành'),
+('LH002','HV005', 6.0, 9.5, N'Chưa hoàn thành'),
+('LH002','HV006', 7.5, 6.0, N'Chưa hoàn thành'),
+('LH002','HV010', 5.5, 9.0, N'Chưa hoàn thành'),
+('LH002','HV012', 6.0, 7.0, N'Chưa hoàn thành'),
+('LH002','HV011', 7.5, 7.5, N'Chưa hoàn thành'),
+('LH002','HV008', 7.5, 8.0, N'Chưa hoàn thành')
+INSERT INTO DANHSACHLOP(MaLop, HVID, DiemGiuaKy, DiemCuoiKy,TrangThai) VALUES
+('LH002','HV013', 6.5, 8.0, N'Chưa hoàn thành')
+INSERT INTO DANHSACHLOP(MaLop, HVID, DiemGiuaKy, DiemCuoiKy, TrangThai) VALUES
+('LH001','HV009', 7.5, 8.0, N'Chưa hoàn thành')
+INSERT INTO DANHSACHLOP(MaLop, HVID, DiemGiuaKy, DiemCuoiKy, TrangThai) VALUES
+('LH003','HV001', 7.5, 8.0, N'Chưa hoàn thành'),
+('LH003','HV003', 6.5, 9.0, N'Chưa hoàn thành')
+INSERT INTO DANHSACHLOP(MaLop, HVID, TrangThai) VALUES
+('LH004','HV001', N'Chưa hoàn thành')
+
+--Lịch sử thu tiền học phí, tiền quỹ, tiền mua khóa học,...
+CREATE FUNCTION AUTO_MaPT()
+RETURNS VARCHAR(5)
+AS
+BEGIN
+	DECLARE @ID VARCHAR(5)
+	IF (SELECT COUNT(MaPT) FROM LICHSUTHUTIEN) = 0
+		SET @ID = '0'
+	ELSE
+		SELECT @ID = MAX(RIGHT(MaPT, 3)) FROM LICHSUTHUTIEN
+		SELECT @ID = CASE
+			WHEN @ID >= 0 and @ID < 9 THEN 'PT00' + CONVERT(CHAR, CONVERT(INT, @ID) + 1)
+			WHEN @ID >= 9 THEN 'PT0' + CONVERT(CHAR, CONVERT(INT, @ID) + 1)
+		END
+	RETURN @ID
+END
+CREATE TABLE dbo.LICHSUTHUTIEN
+(
+	MaPT char(5) PRIMARY KEY CONSTRAINT MaPT DEFAULT dbo.AUTO_MaPT(),
+	HVID char(5),--tham chieu den STUDENT.HSID
+	MaLop char(5),--tham chieu den MONHOC.MaLop
+	LoaiTien nvarchar(50),
+	SoTienDong int,
+	Ngay DATE,
+	Gio TIME,
+	CONSTRAINT FK_LSDT_HVID FOREIGN KEY (HVID) REFERENCES HOCVIEN(HVID) ON DELETE CASCADE ON UPDATE CASCADE,
+	CONSTRAINT FK_LSDT_MaLop FOREIGN KEY (MaLop) REFERENCES LOPHOC(MaLop) ON DELETE CASCADE ON UPDATE CASCADE
+)
+drop table LICHSUTHUTIEN
+INSERT INTO LICHSUTHUTIEN(HVID, MaLop, LoaiTien, SoTienDong, Ngay, Gio) VALUES
+('HV001', 'LH001', N'Học phí', 200000, '2023-01-23', '16:45:00')
+INSERT INTO LICHSUTHUTIEN(HVID, MaLop, LoaiTien, SoTienDong, Ngay, Gio) VALUES
+('HV001', 'LH001', N'Học phí', 20000, '2023-01-23', '16:55:00')
+
+select *from LICHSUTHUTIEN
+select *from BANGHOCPHI 
+
+------Tạo bảng AllPeople
+CREATE VIEW IDFULL as
+SELECT HVID as ID FROM HOCVIEN
+		union
+			SELECT GvID FROM GIANGVIEN      
+SELECT HVID as ID INTO FULL_ID
+FROM HOCVIEN
+			union
+			SELECT GvID FROM GIANGVIEN            
+--đặt khóa chính cho bảng mới
+ALTER TABLE FULL_ID
+ADD CONSTRAINT PK_FULL_ID PRIMARY KEY (ID)
+
+--Lịch sử chi tiền lương,thưởng, ứng lương...
+CREATE FUNCTION AUTO_MaPC()
+RETURNS VARCHAR(5)
+AS
+BEGIN
+	DECLARE @ID VARCHAR(5)
+	IF (SELECT COUNT(MaPC) FROM LICHSUCHITIEN) = 0
+		SET @ID = '0'
+	ELSE
+		SELECT @ID = MAX(RIGHT(MaPC, 3)) FROM LICHSUCHITIEN
+		SELECT @ID = CASE
+			WHEN @ID >= 0 and @ID < 9 THEN 'PC00' + CONVERT(CHAR, CONVERT(INT, @ID) + 1)
+			WHEN @ID >= 9 THEN 'PC0' + CONVERT(CHAR, CONVERT(INT, @ID) + 1)
+		END
+	RETURN @ID
+END
+CREATE TABLE dbo.LICHSUCHITIEN
+(
+	MaPC char(5) PRIMARY KEY CONSTRAINT MaPC DEFAULT dbo.AUTO_MaPC(),
+	ID char(5),--tham chieu toi bảng tổng hợp ID giảng viên và nhân viên
+	ChucVu nvarchar(50), --GV or NV
+	LoaiTien nvarchar(50),
+	SoTien int,
+	Ngay DATE,
+	Gio TIME,
+)
+
+SELECT MaPC, ID, CONCAT(GIANGVIEN.HOTEN, NHANVIEN.HOTEN, HOCVIEN.HOTEN) as HOTEN, LICHSUCHITIEN.ChucVu, LoaiTien, SoTien, Ngay, Gio
+FROM LICHSUCHITIEN left join GIANGVIEN on LICHSUCHITIEN.ID = GIANGVIEN.GvID
+					left join NHANVIEN on LICHSUCHITIEN.ID = NHANVIEN.NVID
+					left join HOCVIEN on LICHSUCHITIEN.ID = HOCVIEN.HVID
+
+SELECT CONCAT(AccID_Adm,AccID_Stu, AccID_Tea) as AccID, CONCAT(ACCOUNTS_ADMIN.username, ACCOUNTS_STUDENT.username, ACCOUNTS_TEACHER.username) as username, CONCAT(ACCOUNTS_ADMIN.pass, ACCOUNTS_STUDENT.pass, ACCOUNTS_TEACHER.pass) as pass, CONCAT(ACCOUNTS_ADMIN.Remember, ACCOUNTS_STUDENT.Remember, ACCOUNTS_TEACHER.Remember) as remember
+FROM ACCOUNTS_ADMIN full join ACCOUNTS_STUDENT on ACCOUNTS_ADMIN.AccID_Adm = ACCOUNTS_STUDENT.AccID_Stu
+					full join ACCOUNTS_TEACHER on ACCOUNTS_ADMIN.AccID_Adm = ACCOUNTS_TEACHER.AccID_Tea
+update ACCOUNTS_ADMIN set Remember = 1
+delete LICHSUCHITIEN Where MaPC = ''
+INSERT INTO LICHSUCHITIEN(ID, ChucVu, LoaiTien, SoTien, Ngay, Gio) VALUES
+('GV001', N'Giảng viên', N'Trợ cấp', 500000, '2023-04-30', '14:22:00')
+INSERT INTO LICHSUCHITIEN(ID, ChucVu, LoaiTien, SoTien, Ngay, Gio) VALUES
+('NV001', N'Nhân viên', N'Trợ cấp', 450000, '2023-01-17', '18:54:00')
+INSERT INTO LICHSUCHITIEN(ID, ChucVu, LoaiTien, SoTien, Ngay, Gio) VALUES
+('HV001', N'Học viên', N'Thưởng', 100000, '2023-02-04', '08:00:00')
+
+--Bang luong
+CREATE TABLE dbo.BANGLUONG
+(
+	ID char(5) PRIMARY KEY, --tham chieu toi AllPeople.ID
+	LuongThang char(20),
+	PhuCap char(20),
+	TienThuong char(20),
+	TienBaoHiem char(20),
+	--CONSTRAINT FK_BANGLUONG FOREIGN KEY (ID) REFERENCES AllPeople(ID)
+)
+
+--------------HAM THU--------------
+CREATE TABLE dbo.HOPTHU
+(	
+	MaThu char(5) PRIMARY KEY CONSTRAINT MaThu DEFAULT dbo.AUTO_MaThu(),
+	HVID char(5),--tham chieu toi HOCVIEN.HvID
+	TieuDe nTEXT,
+	Noidung nTEXT,
+	Ngay DATE,
+	Gio TIME,
+	DanhDau BIT DEFAULT 0, --0: chưa đọc| 1: đã đọc
+	CONSTRAINT FK_HAMTHU FOREIGN KEY (HVID) REFERENCES HOCVIEN (HVID) ON DELETE CASCADE ON UPDATE CASCADE
+)
+drop table HOPTHU
+CREATE TABLE dbo.HOPTHU
+(	
+	MaThu char(5) PRIMARY KEY CONSTRAINT MaThu DEFAULT dbo.AUTO_MaThu(),
+	IDGui char(5),--tham chieu toi HOCVIEN.HvID
+	ChucVu nvarchar(50),
+	IDNhan char(5),
+	TieuDe nTEXT,
+	Noidung nTEXT,
+	Ngay DATE,
+	Gio TIME,
+	DanhDau BIT DEFAULT 0, --0: chưa đọc| 1: đã đọc
+	--CONSTRAINT FK_HAMTHU FOREIGN KEY (HVID) REFERENCES HOCVIEN (HVID) ON DELETE CASCADE ON UPDATE CASCADE
+)
+
+
+select * from HOPTHU
+CREATE FUNCTION AUTO_MaThu()
+RETURNS VARCHAR(5)
+AS
+BEGIN
+	DECLARE @ID VARCHAR(5)
+	IF (SELECT COUNT(MaThu) FROM HOPTHU) = 0
+		SET @ID = '0'
+	ELSE
+		SELECT @ID = MAX(RIGHT(MaThu, 3)) FROM HOPTHU
+		SELECT @ID = CASE
+			WHEN @ID >= 0 and @ID < 9 THEN 'EM00' + CONVERT(CHAR, CONVERT(INT, @ID) + 1)
+			WHEN @ID >= 9 THEN 'EM0' + CONVERT(CHAR, CONVERT(INT, @ID) + 1)
+		END
+	RETURN @ID
+END
+delete HOPTHU
+INSERT INTO HOPTHU(IDGui,IDNhan, ChucVu, TieuDe, Noidung, Ngay, Gio) VALUES 
+('HV001','AM001', 'Admin' , N'Góp ý quá trình giảng dạy', N'ahjdasgdasgdajhgacsdhvobviugvdcsdfdfsdfdfdsh', '2023-03-01', '14:05:00')
+INSERT INTO HOPTHU(IDGui,IDNhan, ChucVu, TieuDe, Noidung, Ngay, Gio) VALUES 
+('HV002','AM001', 'Admin' , N'GOP Y', N'asdsadasdasdasdasd', '2023-03-01', '14:05:00')
+INSERT INTO HOPTHU(HVID, TieuDe, Noidung, Ngay, Gio) VALUES 
+('HV001', N'Góp ý quá trình giảng dạy', N'asdasdasahjdasgdasgdajhgacsdhvobviugvdcsdfdfsdfdfdsh', '2023-03-02', '14:05:00')
+
+-----CÁC BẢNG VIEW----------
+--view full accid, maso
+CREATE VIEW FULL_THONGTIN AS
+Select CONCAT(HOCVIEN.HVID, GIANGVIEN.GvID, ADMIN.AdmID) as ID, 
+		CONCAT(HOCVIEN.HOTEN, GIANGVIEN.HOTEN, ADMIN.HOTEN) as HOTEN,
+		CONCAT(HOCVIEN.ChucVu, GIANGVIEN.ChucVu, ADMIN.ChucVu) as ChucVu,
+		CONCAT(ACCOUNTS_STUDENT.AccID_Stu, ACCOUNTS_TEACHER.AccID_Tea, ACCOUNTS_ADMIN.AccID_Adm) as ACCID,
+		CONCAT(ACCOUNTS_STUDENT.username, ACCOUNTS_TEACHER.username, ACCOUNTS_ADMIN.username) as USERNAME,
+		CONCAT(ACCOUNTS_STUDENT.pass, ACCOUNTS_TEACHER.pass, ACCOUNTS_ADMIN.pass) as PASS
+From HOCVIEN full join GIANGVIEN on HOCVIEN.HVID = GIANGVIEN.GvID
+			full join ADMIN on HOCVIEN.HVID = ADMIN.AdmID
+			full join ACCOUNTS_STUDENT on HOCVIEN.ACCID = ACCOUNTS_STUDENT.AccID_Stu
+			full join ACCOUNTS_TEACHER on GIANGVIEN.ACCID = ACCOUNTS_TEACHER.AccID_Tea
+			full join ACCOUNTS_ADMIN on ADMIN.ACCID = ACCOUNTS_ADMIN.AccID_Adm
+
+--bảng điểm 
+CREATE VIEW BANGDIEM AS
+SELECT DENSE_RANK() 
+OVER(ORDER BY (DiemGiuaKy + DiemCuoiKy)/2 asc) AS XepHang, DANHSACHLOP.MaLop, HVID, DiemGiuaKy, DiemCuoiKy,
+												(DiemGiuaKy + DiemCuoiKy)/2 as DiemTB, LOPHOC.TTMoLop, LOPHOC.XacNhan, 
+  CASE 
+    WHEN (DiemGiuaKy + DiemCuoiKy)/2 >= 8 THEN N'Hoàn thành'
+    ELSE N'Chưa hoàn thành'
+  END as TrangThai
+FROM DANHSACHLOP join LOPHOC on DANHSACHLOP.MaLop = LOPHOC.MaLop
+
+--danh sach lop hoc         
+--CREATE VIEW LOPDANGKI AS
+--SELECT DISTINCT dbo.LOPHOC.MaLop, dbo.LOPHOC.TenMon, dbo.KHOAHOC.TenKH, dbo.LOPHOC.SoBuoiTrongTuan, dbo.LOPHOC.HocPhi, dbo.LOPHOC.DiemTBQuaMon, dbo.LOPHOC.SoHocVien, dbo.LOPHOC.NgayBatDau, dbo.LOPHOC.NgayKetThuc, 
+--                  dbo.LOPHOC.TrangThai, dbo.LICHHOC.Thu, dbo.LICHHOC.Ca, dbo.LICHHOC.Phong, dbo.GIANGVIEN.HOTEN, dbo.LOPHOC.GiangVien, LOPHOC.TTMoLop, LOPHOC.XacNhan
+--FROM     dbo.KHOAHOC INNER JOIN dbo.LOPHOC ON dbo.KHOAHOC.MaKH = dbo.LOPHOC.MaKH 
+--					INNER JOIN dbo.LICHHOC ON dbo.LOPHOC.MaLop = dbo.LICHHOC.MaLop 
+--					INNER JOIN dbo.GIANGVIEN on dbo.LOPHOC.GiangVien = dbo.GIANGVIEN.GvID
+CREATE VIEW LOPDANGKI AS
+SELECT  dbo.LOPHOC.MaLop, dbo.LOPHOC.TenMon, dbo.KHOAHOC.TenKH, dbo.LOPHOC.SoBuoiTrongTuan, dbo.LOPHOC.HocPhi, 
+		dbo.LOPHOC.DiemTBQuaMon, dbo.LOPHOC.SoHocVien, dbo.LOPHOC.NgayBatDau, dbo.LOPHOC.NgayKetThuc, dbo.LOPHOC.TrangThai, 
+		dbo.LICHHOC.Thu, dbo.LICHHOC.Ca, dbo.LICHHOC.Phong, dbo.GIANGVIEN.HOTEN, dbo.LOPHOC.GiangVien, LOPHOC.TTMoLop, LOPHOC.XacNhan
+FROM     dbo.KHOAHOC INNER JOIN dbo.LOPHOC ON dbo.KHOAHOC.MaKH = dbo.LOPHOC.MaKH 
+					INNER JOIN dbo.LICHHOC ON dbo.LOPHOC.MaLop = dbo.LICHHOC.MaLop 
+					LEFT JOIN dbo.GIANGVIEN on dbo.LOPHOC.GiangVien = dbo.GIANGVIEN.GvID
+
+
+--danh sach cac lop HV da dky
+CREATE VIEW LOPHOCDADANGKI AS
+SELECT dbo.DANHSACHLOP.HVID, dbo.DANHSACHLOP.MaLop, dbo.LOPHOC.TenMon, dbo.LOPHOC.HocPhi, dbo.LOPHOC.NgayBatDau,
+		dbo.LOPHOC.NgayKetThuc, dbo.LOPHOC.GiangVien, dbo.DANHSACHLOP.TrangThai, LOPHOC.TTMoLop, LOPHOC.XacNhan ,dbo.GIANGVIEN.HOTEN
+FROM     dbo.DANHSACHLOP INNER JOIN dbo.LOPHOC ON dbo.DANHSACHLOP.MaLop = dbo.LOPHOC.MaLop 
+						 LEFT JOIN dbo.GIANGVIEN ON LOPHOC.GiangVien = GIANGVIEN.GvID 
+
+--Thoi khoa bieu
+CREATE VIEW THOIKHOABIEU AS
+SELECT DISTINCT dbo.LOPHOC.MaLop, LOPHOC.GiangVien as GvID, DSL.HVID,  dbo.LICHHOC.Thu, 
+				dbo.LICHHOC.Ca, dbo.LICHHOC.Phong, dbo.GIOHOC.GioBatDau, dbo.GIOHOC.GioKetThuc, dbo.LOPHOC.TenMon, 
+				dbo.LOPHOC.TenMonGon, LOPHOC.TTMoLop, LOPHOC.XacNhan
+FROM     dbo.LICHHOC FULL JOIN dbo.LOPHOC ON dbo.LICHHOC.MaLop = dbo.LOPHOC.MaLop 
+					FULL JOIN dbo.GIOHOC ON dbo.LICHHOC.Ca = dbo.GIOHOC.Ca 
+					Full JOIN (Select DISTINCT DANHSACHLOP.MaLop, DANHSACHLOP.HVID FROM dbo.DANHSACHLOP) as DSL ON dbo.LICHHOC.MaLop = DSL.MaLop
+Order by LOPHOC.MaLop
+
+
+--Bảng học phí, nợ,
+CREATE VIEW BANGHOCPHI AS
+SELECT LOPHOCDADANGKI.HVID, LOPHOC.MaKH, KHOAHOC.TenKH, LOPHOCDADANGKI.MaLop, LOPHOCDADANGKI.TenMon,  LOPHOCDADANGKI.NgayBatDau, LOPHOCDADANGKI.NgayKetThuc, 
+	   LOPHOCDADANGKI.HocPhi, ISNULL(NopHoc.SoTienDong, 0) as DaDong, 
+	CASE 
+		WHEN NopHoc.SoTienDong IS NULL THEN LOPHOCDADANGKI.HocPhi 
+		ELSE LOPHOCDADANGKI.HocPhi - NopHoc.SoTienDong
+		
+	END AS [ConNo], 
+	CASE 
+		WHEN NopHoc.SoTienDong Is NULL or NopHoc.SoTienDong < LOPHOCDADANGKI.HocPhi  THEN N'Còn nợ'
+		ELSE N'Hoàn thành'
+	END AS [TrangThai]
+
+from LOPHOCDADANGKI left join (Select HVID, MaLop, Sum(SoTienDong) as SoTienDong
+							   From LICHSUTHUTIEN
+							   GROUP BY HVID, MaLop) as NopHoc 
+							   on LOPHOCDADANGKI.HVID = NopHoc.HVID and LOPHOCDADANGKI.MaLop = NopHoc.MaLop
+					inner join LOPHOC on LOPHOC.MaLop = LOPHOCDADANGKI.MaLop
+					inner join KHOAHOC on KHOAHOC.MaKH = LOPHOC.MaKH
+					
+
+--bảng lương
+select * from 
+CREATE TABLE [dbo].[BANGLUONG](
+    [ID] [char](20) NOT NULL,
+    [HOTEN] [nvarchar](100) NULL,
+    [CHUCVU] [nvarchar](100) NULL,
+    [Luong] [int] NULL CONSTRAINT [DF_BANGLUONG_Luong_1] DEFAULT (3000000),
+    [LuongDay] [int] NULL CONSTRAINT [DF_BANGLUONG_Luong_2] DEFAULT (0),
+    [PhuCap] [int] NULL CONSTRAINT [DF_BANGLUONG_PhuCap] DEFAULT (0),
+    [TienThuong] [int] NULL CONSTRAINT [DF_BANGLUONG_TienThuong] DEFAULT (0),
+    [TienBaoHiem] [int] NULL CONSTRAINT [DF_BANGLUONG_TienBaoHiem] DEFAULT (0),
+    [Tongluong] [int] NULL CONSTRAINT [DF_BANGLUONG_Tongluong] DEFAULT (0),
+    [THANG] [int] NOT NULL,
+    CONSTRAINT [PK_BANGLUONG] PRIMARY KEY CLUSTERED (
+        [ID] ASC,
+        [THANG] ASC
+    )
+);
+
+select * from BANGLUONG
+go
+DECLARE @i INT = 1; -- declare and initialize the @i variable
+
+WHILE @i <= 12
+BEGIN
+    INSERT INTO BANGLUONG (ID, HOTEN, CHUCVU, LuongDay, PhuCap, TienThuong, TienBaoHiem, THANG)
+    SELECT GIANGVIEN.GvID, GIANGVIEN.HOTEN, N'Giáo viên' ,0, 0, 0, 0,@i
+    FROM GIANGVIEN
+    WHERE NOT EXISTS (
+        SELECT 1 FROM BANGLUONG 
+        WHERE BANGLUONG.ID = GIANGVIEN.GvID 
+        AND BANGLUONG.THANG = @i
+        AND BANGLUONG.ID + CAST(BANGLUONG.THANG AS NVARCHAR(2)) NOT IN (
+            SELECT ID + CAST(THANG AS NVARCHAR(2)) FROM BANGLUONG 
+            WHERE THANG < @i
+        )
+    ) AND NOT EXISTS (
+        SELECT 1 FROM BANGLUONG 
+        WHERE BANGLUONG.ID = GIANGVIEN.GvID
+        AND BANGLUONG.THANG = @i
+    )
+    GROUP BY GIANGVIEN.GvID, GIANGVIEN.HOTEN;
+    SET @i = @i + 1; -- increment the @i variable
+END
+GO
+UPDATE BANGLUONG SET LuongDay=LOPHOC.LUONG FROM BANGLUONG 
+INNER JOIN LOPHOC ON BANGLUONG.ID = LOPHOC.GiangVien
+go
+DECLARE @i INT = 1;
+
+WHILE @i <= 12
+BEGIN
+    INSERT INTO BANGLUONG (ID, HOTEN, CHUCVU, LuongDay, PhuCap, TienThuong, TienBaoHiem, THANG)
+    SELECT NHANVIEN.NVID, NHANVIEN.HOTEN,N'Nhân viên', 0, 0, 0, 0,@i
+    FROM NHANVIEN
+    WHERE NOT EXISTS (
+        SELECT 1 FROM BANGLUONG 
+        WHERE BANGLUONG.ID = NHANVIEN.NVID 
+        AND BANGLUONG.THANG = @i
+        AND BANGLUONG.ID + CAST(BANGLUONG.THANG AS NVARCHAR(2)) NOT IN (
+            SELECT ID + CAST(THANG AS NVARCHAR(2)) FROM BANGLUONG 
+            WHERE THANG < @i
+        )
+    ) AND NOT EXISTS (
+        SELECT 1 FROM BANGLUONG 
+        WHERE BANGLUONG.ID = NHANVIEN.NVID 
+        AND BANGLUONG.THANG = @i
+    )
+    GROUP BY NHANVIEN.NVID, NHANVIEN.HOTEN;
+    SET @i = @i + 1;
+END
+
+
+
+--------------------------------------
+SELECT DISTINCT MaLop, TenMon, TenKH, HocPhi, HOTEN, TrangThai 
+FROM LOPDANGKI WHERE MaLop not in (Select Lop.MaLop From 
+									(SELECT *From DANHSACHLOP Where HVID = 'HV001') as Lop)
+
+
+SELECT KHOAHOC.MaKH, KHOAHOC.TenKH, LOPHOC.MaLop, LOPHOC.TenMon, NgayBatDau, NgayKetThuc, SoHocVien, GIANGVIEN.GvID, GIANGVIEN.HOTEN, HocPhi
+FROM LOPHOC inner join KHOAHOC on LOPHOC.MaKH = KHOAHOC.MaKH join GIANGVIEN on GIANGVIEN.GvID = LOPHOC.GiangVien 
+WHERE LOPHOC.MaLop = 'LH004'
+
+Select DISTINCT LOPHOCDADANGKI.MaLop, TenMon, NgayBatDau, NgayKetThuc, HOTEN, TrangThai , Thu, Ca
+From LOPHOCDADANGKI join LICHHOC on LOPHOCDADANGKI.MaLop = LICHHOC.MaLop
+Where HVID = 'HV001'
+
+go INSERT INTO BANGLUONG (ID, HOTEN, LuongDay, PhuCap, TienThuong, TienBaoHiem) 
+SELECT GIANGVIEN.GvID, GiangVien.HOTEN, 0, 0, 0, 0 
+FROM GIANGVIEN, LOPHOC 
+GROUP BY GIAOVIEN.GVID, GIAOVIEN.HOTEN go 
+UPDATE BANGLUONG SET LuongDay=LOPHOC.LUONG FROM BANGLUONG INNER JOIN LOPHOC ON BANGLUONG.ID = LOPHOC.GiaoVien go 
+go INSERT INTO BANGLUONG (ID,HOTEN, Luong, PhuCap, TienThuong, TienBaoHiem)SELECT NVID,HOTEN, 5000000, 0, 0, 0 FROM NHANVIEN
+
+SELECT DISTINCT MaLop, TenMon, TenKH, HocPhi, GiangVien, HOTEN, NgayBatDau, NgayKetThuc,TrangThai, TTMoLop, XacNhan 
+FROM LOPDANGKI
+
+
+SELECT * FROM FULL_THONGTIN Where USERNAME = 'qwewq'
+
+update BANGLUONG set Luong = 100
+select * from BANGLUONG
+select * from HOPTHU
+select * from FULL_THONGTIN
+select * from BANGHOCPHI 
+select * from LICHSUTHUTIEN
+select *from THOIKHOABIEU
+select *from LOPDANGKI
+select *from LOPHOCDADANGKI 
+select * from DANHSACHLOP
+select *from BANGDIEM
+SELECT * FROM HOCVIEN
+SELECT * FROM GIANGVIEN
+SELECT * FROM KHOAHOC
+SELECT * FROM PHONGHOC
+SELECT * FROM LOPHOC
+SELECT * FROM GIOHOC
+SELECT * FROM LICHHOC
+Select *from ACCOUNTS_STUDENT
+Select *from ACCOUNTS_TEACHER
+Select *from ACCOUNTS_NHANVIEN
+Select *from ACCOUNTS_ADMIN
